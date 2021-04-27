@@ -5,6 +5,7 @@ namespace App\Beers\Domain;
 
 
 use App\Beers\Application\Search\BeerSearchResponse;
+use DateTimeImmutable;
 
 class BeersFactory
 {
@@ -27,7 +28,7 @@ class BeersFactory
             new BeerDescription($response->description()),
             new BeerImage($response->img()),
             new BeerSlogan($response->slogan()),
-            new BeerDateCreated(\DateTimeImmutable::createFromFormat('m/Y', $response->dateCreated()))
+            new BeerDateCreated( DateTimeImmutable::createFromFormat('Y-m-d', $response->dateCreated()))
         );
     }
 

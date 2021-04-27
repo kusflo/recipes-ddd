@@ -3,7 +3,6 @@
 namespace App\Beers\Infrastructure;
 
 use App\Beers\Application\Search\BeerSearchResponse;
-use App\Beers\Domain\BeersFactory;
 use App\Beers\Domain\BeersRepository;
 use App\Beers\Domain\FoodString;
 use GuzzleHttp\Client;
@@ -26,12 +25,12 @@ class PunkApiBeersRepository implements BeersRepository
         if(is_array($array) && !empty($array)) {
             foreach($array as $item) {
                 $beers[] = new BeerSearchResponse(
-                    (string) $item["id"],
-                    (string) $item["name"],
-                    (string) $item["description"],
-                    (string) $item["image_url"],
-                    (string) $item["tagline"],
-                    (string) $item["first_brewed"]
+                    (string) $item->id,
+                    (string) $item->name,
+                    (string) $item->description,
+                    (string) $item->image_url,
+                    (string) $item->tagline,
+                    $this->formatDate($item->first_brewed)
                 );
             }
         }
@@ -43,11 +42,25 @@ class PunkApiBeersRepository implements BeersRepository
     private function getJsonResponse(string $param) :string
     {
         $client = new Client();
-        $response = $client->request('GET', self::URI_API_BEERS . $param);
+        $uri = self::URI_API_BEERS . $param;
+        $response = $client->request('GET', $uri);
 
         return $response->getBody(); // '{"id": 1420053, "name": "guzzle", ...}'
 
         //echo $response->getStatusCode(); 200
+    }
+
+    private function formatDate($param): string
+    {
+        $monthYear = explode('/', $param);
+        //TODO La Api no devuelve el día y a veces tampoco mes.
+        if(count($monthYear) > 1){
+            $date = $monthYear[1] . '-' . $monthYear[0] . '-01';
+        } else {
+            $date = $monthYear[0] . '-' .  '01-01';
+        }
+
+         return $date;
     }
 
 

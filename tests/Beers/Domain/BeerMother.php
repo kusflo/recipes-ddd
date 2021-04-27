@@ -26,7 +26,7 @@ class BeerMother
                 'description',
                 'https://images.punkapi.com/v2/12.png',
                 'slogan',
-                '12/2015'
+                '2015-12-01'
         );
     }
 
