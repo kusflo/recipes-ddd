@@ -2,6 +2,12 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 
-recipes:
-    path: /recipes
-    controller: App\Controller\BerersController::index
+beers_simple:
+    path: /simple/query={food}
+    controller: App\Controller\BeersController::simple
+    methods: GET
+
+beers_full:
+    path: /full/query={food}
+    controller: App\Controller\BeersController::full
+    methods: GET

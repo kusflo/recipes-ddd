@@ -26,6 +26,46 @@ class Beer
         $this->dateCreated = $dateCreated;
     }
 
+    public static function simpleListToArray(array $array): array
+    {
+        $out = array();
+        if(self::isBeerArray($array)) {
+            /**@var Beer $item **/
+            foreach($array as $item) {
+                $out[] = [
+                  'id' => $item->id()->value(),
+                  'name' => $item->name()->value(),
+                  'description' => $item->description()->value()
+                ];
+            }
+        }
+
+        return $out;
+
+    }
+
+    public static function fullListToArray(array $array): array
+    {
+        $out = array();
+        if(self::isBeerArray($array)) {
+            /**@var Beer $item **/
+            foreach($array as $item) {
+                $out[] = [
+                    'id' => $item->id()->value(),
+                    'name' => $item->name()->value(),
+                    'description' => $item->description()->value(),
+                    'image' => $item->image()->value(),
+                    'slogan' => $item->slogan()->value(),
+                    'dateCreated' => $item->dateCreated()->date()->format('d-m-Y')
+                ];
+            }
+        }
+
+        return $out;
+
+    }
+
+
     public function id(): BeerID
     {
         return $this->id;
@@ -55,5 +95,11 @@ class Beer
     {
         return $this->dateCreated;
     }
+
+    private static function isBeerArray(array $array): bool
+    {
+        return is_array($array) && !empty($array) && is_a($array[0],self::class);
+    }
+
 
 }

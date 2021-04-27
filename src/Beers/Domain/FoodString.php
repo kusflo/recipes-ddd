@@ -8,6 +8,7 @@ use App\Beers\Shared\Domain\ValueObject\StringValueObject;
 
 class FoodString extends StringValueObject
 {
+
     public function __construct(string $value)
     {
         $value = $this->formatString($value);
