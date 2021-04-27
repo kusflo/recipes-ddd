@@ -16,17 +16,16 @@ class PunkApiBeersRepository implements BeersRepository
     {
         $param = 'food=' . $string->value();
         $json = $this->getJsonResponse($param);
-
-        return $this->jsonToBeers($json);
+        return $this->jsonToArrayBeersSearchResponse($json);
     }
 
-    private function jsonToBeers(string $json): array
+    private function jsonToArrayBeersSearchResponse(string $json): array
     {
         $beers = [];
         $array = json_decode($json);
         if(is_array($array) && !empty($array)) {
             foreach($array as $item) {
-                $beerSearchResponse = new BeerSearchResponse(
+                $beers[] = new BeerSearchResponse(
                     (string) $item["id"],
                     (string) $item["name"],
                     (string) $item["description"],
@@ -34,14 +33,11 @@ class PunkApiBeersRepository implements BeersRepository
                     (string) $item["tagline"],
                     (string) $item["first_brewed"]
                 );
-                $beers[] = BeersFactory::simple($beerSearchResponse);
             }
         }
 
         return $beers;
     }
-
-
 
 
     private function getJsonResponse(string $param) :string

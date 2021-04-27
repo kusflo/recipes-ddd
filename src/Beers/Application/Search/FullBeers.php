@@ -7,7 +7,7 @@ use App\Beers\Domain\BeersFactory;
 use App\Beers\Domain\BeersRepository;
 use App\Beers\Domain\FoodString;
 
-class SimpleBeers
+class FullBeers
 {
     private BeersRepository $repository;
 
@@ -22,9 +22,8 @@ class SimpleBeers
         $beers = [];
         $array = $this->repository->searchByFoodString($food);
         foreach($array as $item) {
-            $beers[] = BeersFactory::simple($item);
+            $beers[] = BeersFactory::full($item);
         }
-
         return $beers;
     }
 

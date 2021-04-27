@@ -9,26 +9,24 @@ use App\Beers\Domain\BeersFactory;
 class BeerMother
 {
 
-    public static function validList(): array
+    public static function getBeerSearchResponseList(): array
     {
         return array(
-            self::getValidBeer(1),
-            self::getValidBeer(2),
-            self::getValidBeer(3),
+            self::getBeerSearchResponse(1),
+            self::getBeerSearchResponse(2),
+            self::getBeerSearchResponse(3),
         );
     }
 
-    private static function getValidBeer($id)
+    private static function getBeerSearchResponse($id)
     {
-        return BeersFactory::simple(
-            new BeerSearchResponse(
+        return new BeerSearchResponse(
                 $id,
                 'name',
                 'description',
-                null,
-                null,
-                null
-            )
+                'https://images.punkapi.com/v2/12.png',
+                'slogan',
+                '12/2015'
         );
     }
 

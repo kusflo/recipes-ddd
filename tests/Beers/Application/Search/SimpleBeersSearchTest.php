@@ -23,7 +23,7 @@ class SimpleBeersSearchTest extends TestCase
     }
 
     /** @test */
-    public function it_should_find_a_valid_beers_list(): void
+    public function it_should_find_a_valid_simple_beers_list(): void
     {
 
         $searchString = "Tomato salad";
