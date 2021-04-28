@@ -7,7 +7,6 @@ use App\Beers\Application\Search\FullBeers;
 use App\Beers\Application\Search\SimpleBeers;
 use App\Beers\Domain\Beer;
 use App\Beers\Domain\FoodString;
-use App\Beers\Infrastructure\PunkApiBeersRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,15 +20,16 @@ class BeersController extends AbstractController
      * https://127.0.0.1:8000/simple/query=tomato_salad
      *
      */
-    public function simple($food)
+    public function simple($food, SimpleBeers $simpleBeersSearch): JsonResponse
     {
 
         $foodString = new FoodString($food);
-        $repository = new PunkApiBeersRepository();
-        $simpleBeersSearch = new SimpleBeers($repository);
-        $beers = $simpleBeersSearch->__invoke($foodString);
+        $beers = $simpleBeersSearch($foodString);
 
-        return new JsonResponse(Beer::simpleListToArray($beers));
+        return new JsonResponse(
+            Beer::simpleListToArray($beers),
+            200,
+            ['Access-Control-Allow-Origin' => '*']);
     }
 
     /**
@@ -38,14 +38,16 @@ class BeersController extends AbstractController
      * https://127.0.0.1:8000/full/query=tomato_salad
      *
      */
-    public function full($food)
+    public function full($food, FullBeers $fullBeersSearch): JsonResponse
     {
         $foodString = new FoodString($food);
-        $repository = new PunkApiBeersRepository();
-        $fullBeersSearch = new FullBeers($repository);
-        $beers = $fullBeersSearch->__invoke($foodString);
+        $beers = $fullBeersSearch($foodString);
 
-        return new JsonResponse(Beer::fullListToArray($beers));
+        return new JsonResponse(
+            Beer::fullListToArray($beers),
+            200,
+            ['Access-Control-Allow-Origin' => '*']
+        );
     }
 
 
